@@ -82,7 +82,7 @@ nav {
 	font-size: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background: ivory;
+	/*background: ivory;*/
 }
 
 nav a {
@@ -137,10 +137,10 @@ nav .save_load:hover {
 input[type=range] {
     /*removes default webkit styles*/
     -webkit-appearance: none;
-    
+
     /*fix for FF unable to apply focus style bug */
     border: 1px solid white;
-    
+
     width: 95%;
     display: block;
     margin: 1ex auto 2ex;
@@ -192,10 +192,10 @@ input[type=range]:-moz-focusring{
 input[type=range]::-ms-track {
     width: 95%;
     height: 5px;
-    
+
     /*remove bg colour from the track to use ms-fill-lower and ms-fill-upper instead */
     background: transparent;
-    
+
     /*leave room for the larger thumb to overflow with a transparent border */
     border-color: transparent;
     border-width: 6px 0;
