@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="sampler.css">
         <script src="sampler.js"></script>
         <title>Sampler</title>
     </head>
     <body>
-    	<table class="pads">
-			<tr>
-				<td id="p1"></td>
-				<td id="p2"></td>
-				<td id="p3"></td>
-			</tr>
-			<tr>
-				<td id="p4"></td>
-				<td id="p5"></td>
-				<td id="p6"></td>
-			</tr>
-			<tr>
-				<td id="p7"></td>
-				<td id="p8"></td>
-				<td id="p9"></td>
-			</tr>
-        </table>
+        <div class="sampler">
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+          <button class="sampler-pad" type="button"></button>
+        </div>
         <aside>
 			<form class="controlset" id="master_controls">
 					<legend>Global controls</legend>
@@ -101,12 +95,12 @@
         </aside>
         <nav>
         	<a class="master_controls" href="#">Master</a>
-			<a class="distortion" href="#">Distortion</a>
-			<a class="compressor" href="#">Compressor</a>
-			<a class="delay" href="#">Delay</a>
-			<a class="pad_controls" href="#">Pad</a>
-			<a class="mute_group" href="#">Mute Groups</a>
-			<a class="save_load" href="#">Save/Load</a>
+    			<a class="distortion" href="#">Distortion</a>
+    			<a class="compressor" href="#">Compressor</a>
+    			<a class="delay" href="#">Delay</a>
+    			<a class="pad_controls" href="#">Pad</a>
+    			<a class="mute_group" href="#">Mute Groups</a>
+    			<a class="save_load" href="#">Save/Load</a>
         </nav>
     </body>
 </html>
