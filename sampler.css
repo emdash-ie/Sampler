@@ -3,26 +3,31 @@ html, body {
 	margin: 0;
 }
 
-.sampler {
+.samplerPads {
+	height: 100vw;
+	margin: 0 auto;
+	width: 100vw;
+}
+
+.padGrid {
 	align-content: space-between;
 	display: flex;
 	flex-flow: wrap;
-	height: 100vh;
+	height: 100%;
 	justify-content: space-between;
-	margin: 0 auto;
-	width: 100vh;
+	width: 100%;
 }
 
-.sampler-pad {
+.padGrid-pad {
 	background: dodgerblue;
 	border: none;
-	height: 33.2%;
-	width: 33.2%;
+	height: 33.24%;
+	width: 33.24%;
 }
 
-@media only screen and (orientation: portrait) {
-	.sampler {
-		height: 100vw;
-		width: 100vw;
+@media only screen and (orientation: landscape) {
+	.samplerPads {
+		height: 100vh;
+		width: 100vh;
 	}
 }
