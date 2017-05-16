@@ -39,7 +39,7 @@ if len(form_data) != 0:
 
 	elif display:
 		try:
-			connection = db.connect('cs1dev.ucc.ie', 'nfb2', '***REMOVED***', '2019_nfb2')
+			connection = db.connect('cs1dev.ucc.ie', 'nfb2', '', '2019_nfb2')
 			cursor = connection.cursor(db.cursors.DictCursor)
 			cursor.execute('''SELECT name, id FROM presets''')
 			count = 0
