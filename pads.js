@@ -4,7 +4,7 @@
     function init() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
-        var filenames = [
+        const filenames = [
             'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/kick_int.wav',
 			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/snare_left.wav',
 			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_close.wav',
@@ -64,10 +64,10 @@
             }
         },
         mute: function() {
-            this.mute.gain = 0;
+            this.mute.gain.value = 0;
         },
         unMute: function() {
-            this.mute.gain = 1;
+            this.mute.gain.value = 1;
         },
         muteOthers: function() {
             for (let pad of this.muteGroup) {
@@ -102,7 +102,12 @@
                 this.screenPads[i].addEventListener('click', pad.playSample.bind(pad), false);
                 this.pads.push(pad);
             }
+            var masterSlider = document.querySelector('#master-gain');
+            masterSlider.addEventListener('input', this.changeMaster.bind(this), false);
         },
         numPads: 9,
+        changeMaster: function(inputEvent) {
+            this.output.gain.value = parseFloat(inputEvent.target.value);
+        },
     };
 }());
