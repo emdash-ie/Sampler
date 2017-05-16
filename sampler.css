@@ -1,290 +1,33 @@
-body, html {
+html, body {
 	height: 100%;
-	overflow: hidden;
 	margin: 0;
-	}
-
-table {
-	padding: 0;
-	width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    border-collapse: collapse;
-    z-index: 1;
 }
 
-canvas.meter {
-	width: 100%;
-	height: 2ex;
+.samplerPads {
+	height: 100vw;
+	margin: 0 auto;
+	width: 100vw;
 }
 
-#settings_name + button {
-	margin-right: 3em;
-}
-
-.pads td {
-	text-align: center;
-	vertical-align: middle;
-    border: 1px solid lightgrey;
-    color: white;
-    background-color: silver;
-    transition: background-color linear 0.5s;
-    -webkit-transition: background-color linear 0.5s; /* Some versions of Safari */
-}
-
-.pads td:active {
-	background-color: white;
-	-webkit-transition: background-color linear 0.3s;	/* Some versions of Safari */
-	transition: background-color linear 0.3s;
-}
-
-aside {
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 0;
-	height: 0;
-	z-index: -1;
-	font-size: 100%;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-legend {
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	font-size: 110%;
-}
-
-.controlset {
-	display: none;
-	opacity: 0;
-	background: white;
-	padding: 1em;
-	border: 1px solid lightgrey;
-	z-index: 2;
-	position: relative;
-	left: 0;
-	top: 0;
-	transition: opacity 5s;
-}
-
-nav {
-	display: block;
-	position: relative;
-	left: 0;
-	top: 0;
-	width: 100%;
+.padGrid {
+	align-content: space-between;
+	display: flex;
+	flex-flow: wrap;
 	height: 100%;
-	z-index: 1;
-	font-size: 100%;
-	overflow-x: hidden;
-	overflow-y: auto;
-	background: ivory;
-}
-
-nav a {
-	display: block;
-	text-align: center;
-	color: black;
+	justify-content: space-between;
 	width: 100%;
-	text-decoration: none;
-	padding-top: 1em;
-	padding-bottom: 1em;
-	background: transparent;
-	transition: background 0.25s, color 0.15s;
 }
 
-nav a:hover {
-	color: white;
-	/*background: white;*/
-	/*floralwhite, honeydew, ivory, mintcream*/
+.padGrid-pad {
+	background: dodgerblue;
+	border: none;
+	height: 33.24%;
+	width: 33.24%;
 }
 
-nav .master_controls:hover {
-	background: hsla(210, 90%, 70%, 1);
-}
-
-nav .distortion:hover {
-	background: hsla(220, 70%, 60%, 1);
-}
-
-nav .compressor:hover {
-	background: hsla(230, 85%, 60%, 1);
-}
-
-nav .delay:hover {
-	background: hsla(234, 77%, 43%, 1);
-}
-
-nav .pad_controls:hover {
-	background: hsla(248, 92%, 25%, 1);
-}
-
-nav .mute_group:hover {
-	background: hsla(240, 71%, 19%, 1);
-}
-
-nav .save_load:hover {
-	background: hsla(250, 60%, 10%, 1);
-}
-
-/* Code below for styling range inputs. Stolen from brennaobrien.com, but
-	I've changed bits I wanted to be different. */
-
-input[type=range] {
-    /*removes default webkit styles*/
-    -webkit-appearance: none;
-    
-    /*fix for FF unable to apply focus style bug */
-    border: 1px solid white;
-    
-    width: 95%;
-    display: block;
-    margin: 1ex auto 2ex;
-}
-input[type=range]::-webkit-slider-runnable-track {
-    width: 95%;
-    height: 5px;
-    background: #ddd;
-    border: none;
-    border-radius: 3px;
-}
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    background: black;
-    margin-top: -8px;
-}
-input[type=range]:focus {
-    outline: none;
-}
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #ccc;
-}
-
-input[type=range]::-moz-range-track {
-    width: 95%;
-    height: 5px;
-    background: #ddd;
-    border: none;
-    border-radius: 3px;
-}
-input[type=range]::-moz-range-thumb {
-    border: none;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    background: black;
-}
-
-/*hide the outline behind the border*/
-input[type=range]:-moz-focusring{
-    outline: 1px solid white;
-    outline-offset: -1px;
-}
-
-input[type=range]::-ms-track {
-    width: 95%;
-    height: 5px;
-    
-    /*remove bg colour from the track to use ms-fill-lower and ms-fill-upper instead */
-    background: transparent;
-    
-    /*leave room for the larger thumb to overflow with a transparent border */
-    border-color: transparent;
-    border-width: 6px 0;
-
-    /*remove default tick marks*/
-    color: transparent;
-}
-input[type=range]::-ms-fill-lower {
-    background: #777;
-    border-radius: 10px;
-}
-input[type=range]::-ms-fill-upper {
-    background: #ddd;
-    border-radius: 10px;
-}
-input[type=range]::-ms-thumb {
-    border: none;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    background: black;
-}
-input[type=range]:focus::-ms-fill-lower {
-    background: #888;
-}
-input[type=range]:focus::-ms-fill-upper {
-    background: #ccc;
-}
-
-/* Colours for slider thumbs */
-
-
-#master_controls > input[type=range]::-webkit-slider-thumb {
-	background: hsla(210, 90%, 70%, 1);
-}
-
-#master_controls > input[type=range]::-moz-range-thumb {
-	background: hsla(210, 90%, 70%, 1);
-}
-
-#master_controls > input[type=range]::-ms-thumb {
-	background: hsla(210, 90%, 70%, 1);
-}
-
-
-#distortion > input[type=range]::-webkit-slider-thumb {
-	background: hsla(220, 70%, 60%, 1);
-}
-
-#distortion > input[type=range]::-moz-range-thumb {
-	background: hsla(220, 70%, 60%, 1);
-}
-
-#distortion > input[type=range]::-ms-thumb {
-	background: hsla(220, 70%, 60%, 1);
-}
-
-#compressor > input[type=range]::-webkit-slider-thumb {
-	background: hsla(230, 85%, 60%, 1);
-}
-
-#compressor > input[type=range]::-moz-range-thumb {
-	background: hsla(230, 85%, 60%, 1);
-}
-
-#compressor > input[type=range]::-ms-thumb {
-	background: hsla(230, 85%, 60%, 1);
-}
-
-#delay > input[type=range]::-webkit-slider-thumb {
-	background: hsla(234, 77%, 43%, 1);
-}
-
-#delay > input[type=range]::-moz-range-thumb {
-	background: hsla(234, 77%, 43%, 1);
-}
-
-#delay > input[type=range]::-ms-thumb {
-	background: hsla(234, 77%, 43%, 1);
-}
-
-#pad_controls > input[type=range]::-webkit-slider-thumb {
-	background: hsla(248, 92%, 25%, 1);
-}
-
-#pad_controls > input[type=range]::-moz-range-thumb {
-	background: hsla(248, 92%, 25%, 1);
-}
-
-#pad_controls > input[type=range]::-ms-thumb {
-	background: hsla(248, 92%, 25%, 1);
+@media only screen and (orientation: landscape) {
+	.samplerPads {
+		height: 100vh;
+		width: 100vh;
+	}
 }

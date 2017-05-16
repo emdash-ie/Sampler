@@ -1,57 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-    	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <link rel="stylesheet" type="text/css" href="sampler.css">
-        <script src="sampler.js"></script>
-        <title>Sampler</title>
-    </head>
-    <body>
-    	<table class="pads">
-			<tr>
-				<td id="p1"></td>
-				<td id="p2"></td>
-				<td id="p3"></td>
-			</tr>
-			<tr>
-				<td id="p4"></td>
-				<td id="p5"></td>
-				<td id="p6"></td>
-			</tr>
-			<tr>
-				<td id="p7"></td>
-				<td id="p8"></td>
-				<td id="p9"></td>
-			</tr>
-        </table>
-        <aside>
+  <head>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="sampler.css">
+    <script src="sampler.js"></script>
+    <title>Sampler</title>
+  </head>
+  <body>
+    <div class="samplerPads">
+      <div class="padGrid">
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+        <button class="padGrid-pad" type="button"></button>
+      </div>
+    </div>
+    <aside>
 			<form class="controlset" id="master_controls">
-					<legend>Global controls</legend>
-					<label for="master">Master gain:</label>
-					<input type="range" id="master" min="0" max="200" value="100">
-					<canvas class="meter master" id="output_meter">
+				<legend>Global controls</legend>
+				<label for="master">Master gain:</label>
+				<input type="range" id="master" min="0" max="200" value="100">
+				<canvas class="meter master" id="output_meter">
 			</form>
 			<form class="controlset" id="distortion">
-					<legend>Distortion controls</legend>
-					<label for="distortion_amount">Distortion:</label>
-					<input type="range" id="distortion_amount" min="0" max="100" value="0">
+				<legend>Distortion controls</legend>
+				<label for="distortion_amount">Distortion:</label>
+				<input type="range" id="distortion_amount" min="0" max="100" value="0">
 			</form>
 			<form class="controlset" id="compressor">
-					<legend>Compressor controls</legend>
-					<canvas class="meter compressor" id="gain_reduction">
-					<label for="comp_thresh">Threshold:</label>
-					<input type="range" id="comp_thresh" min="-100" max="0">
-					<label for="comp_gain">Gain:</label>
-					<input type="range" id="comp_gain" min="2" max="20">
-					<label for="comp_ratio">Ratio:</label>
-					<input type="range" id="comp_ratio" min="1" max="100">
+				<legend>Compressor controls</legend>
+				<canvas class="meter compressor" id="gain_reduction">
+				<label for="comp_thresh">Threshold:</label>
+				<input type="range" id="comp_thresh" min="-100" max="0">
+				<label for="comp_gain">Gain:</label>
+				<input type="range" id="comp_gain" min="2" max="20">
+				<label for="comp_ratio">Ratio:</label>
+				<input type="range" id="comp_ratio" min="1" max="100">
 			</form>
 			<form class="controlset" id="delay">
-					<legend>Delay controls</legend>
-					<label for="delay_level">Level:</label>
-					<input type="range" id="delay_level" min="0" max="100" value="0">
-					<label for="delay_feedback">Feedback:</label>
-					<input type="range" id="delay_feedback" min="0" max="100" value="0">
+				<legend>Delay controls</legend>
+				<label for="delay_level">Level:</label>
+				<input type="range" id="delay_level" min="0" max="100" value="0">
+				<label for="delay_feedback">Feedback:</label>
+				<input type="range" id="delay_feedback" min="0" max="100" value="0">
 			</form>
 			<form class="controlset" id="pad_controls">
 				<legend>Pad controls</legend>
@@ -73,9 +69,9 @@
 			</form>
 			<form class="controlset" id="mute_group">
 				<legend>Mute groups</legend>
-        		<select>
-        		</select>
-        		<button id="delete_mute_group" type="button">Delete group</button>
+      		<select>
+      		</select>
+      		<button id="delete_mute_group" type="button">Delete group</button>
 				<fieldset>
 					<input type="checkbox" value="0">1
 					<input type="checkbox" value="1">2
@@ -98,15 +94,15 @@
 				</select>
 				<button type="button">Load setting</button>
 			</form>
-        </aside>
-        <nav>
-        	<a class="master_controls" href="#">Master</a>
+    </aside>
+    <nav>
+    	<a class="master_controls" href="#">Master</a>
 			<a class="distortion" href="#">Distortion</a>
 			<a class="compressor" href="#">Compressor</a>
 			<a class="delay" href="#">Delay</a>
 			<a class="pad_controls" href="#">Pad</a>
 			<a class="mute_group" href="#">Mute Groups</a>
 			<a class="save_load" href="#">Save/Load</a>
-        </nav>
-    </body>
+    </nav>
+  </body>
 </html>
