@@ -102,12 +102,29 @@
                 this.screenPads[i].addEventListener('click', pad.playSample.bind(pad), false);
                 this.pads.push(pad);
             }
-            var masterSlider = document.querySelector('#master-gain');
-            masterSlider.addEventListener('input', this.changeMaster.bind(this), false);
+            var masterSlider = Object.create(GainSlider);
+            masterSlider.connect(document.querySelector('#master-gain'), this.output.gain);
         },
         numPads: 9,
-        changeMaster: function(inputEvent) {
-            this.output.gain.value = parseFloat(inputEvent.target.value);
+    };
+    var GainSlider = {
+        input: null,
+        connect: function(input, target) {
+            this.setTarget(target);
+            this.setInput(input);
+        },
+        setTarget: function(gain) {
+            this.target = gain;
+        },
+        setInput: function(input) {
+            if (this.input) {
+                this.input.removeEventListener('input', this.handleInput.bind(this), false);
+            }
+            this.input = input;
+            this.input.addEventListener('input', this.handleInput.bind(this), false);
+        },
+        handleInput: function(inputEvent) {
+            this.target.value = inputEvent.target.value;
         },
     };
 }());
