@@ -3,7 +3,7 @@
   <head>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="sampler.css">
-    <script src="pads.js"></script>
+    <script src="sampler.js"></script>
     <title>Sampler</title>
   </head>
   <body>
@@ -22,87 +22,9 @@
     </div>
     <aside>
 			<form class="controlset" id="master_controls">
-				<legend>Global controls</legend>
 				<label for="master">Master gain:</label>
-				<input type="range" id="master" min="0" max="1" value="1" step="0.1">
-				<canvas class="meter master" id="output_meter">
-			</form>
-			<form class="controlset" id="distortion">
-				<legend>Distortion controls</legend>
-				<label for="distortion_amount">Distortion:</label>
-				<input type="range" id="distortion_amount" min="0" max="100" value="0">
-			</form>
-			<form class="controlset" id="compressor">
-				<legend>Compressor controls</legend>
-				<canvas class="meter compressor" id="gain_reduction">
-				<label for="comp_thresh">Threshold:</label>
-				<input type="range" id="comp_thresh" min="-100" max="0">
-				<label for="comp_gain">Gain:</label>
-				<input type="range" id="comp_gain" min="2" max="20">
-				<label for="comp_ratio">Ratio:</label>
-				<input type="range" id="comp_ratio" min="1" max="100">
-			</form>
-			<form class="controlset" id="delay">
-				<legend>Delay controls</legend>
-				<label for="delay_level">Level:</label>
-				<input type="range" id="delay_level" min="0" max="100" value="0">
-				<label for="delay_feedback">Feedback:</label>
-				<input type="range" id="delay_feedback" min="0" max="100" value="0">
-			</form>
-			<form class="controlset" id="pad_controls">
-				<legend>Pad controls</legend>
-				<select>
-					<option value="0">1</option>
-					<option value="1">2</option>
-					<option value="2">3</option>
-					<option value="3">4</option>
-					<option value="4">5</option>
-					<option value="5">6</option>
-					<option value="6">7</option>
-					<option value="7">8</option>
-					<option value="8">9</option>
-				</select>
-				<label for="gain">Gain:</label>
-				<input type="range" id="pad_gain" min="0" max="100" value="80">
-				<label for="pad_delay">Delay send:</label>
-				<input type="range" id="pad_delay" min="0" max="100" value="0">
-			</form>
-			<form class="controlset" id="mute_group">
-				<legend>Mute groups</legend>
-      		<select>
-      		</select>
-      		<button id="delete_mute_group" type="button">Delete group</button>
-				<fieldset>
-					<input type="checkbox" value="0">1
-					<input type="checkbox" value="1">2
-					<input type="checkbox" value="2">3<br>
-					<input type="checkbox" value="3">4
-					<input type="checkbox" value="4">5
-					<input type="checkbox" value="5">6<br>
-					<input type="checkbox" value="6">7
-					<input type="checkbox" value="7">8
-					<input type="checkbox" value="8">9<br>
-					<button id="create_mute_group" type="button">Make new group</button>
-				</fieldset>
-			</form>
-			<form class="controlset" id="save_load">
-				<legend>Save/Load presets</legend>
-				<input id="settings_name" type="text" placeholder="Name setting">
-				<button type="button">Save setting</button>
-				<select>
-					<option value='' disabled selected>Select a setting</option>
-				</select>
-				<button type="button">Load setting</button>
+				<input type="range" id="master" min="0" max="1" value="0.7" step="0.1">
 			</form>
     </aside>
-    <nav>
-    	<a class="master_controls" href="#">Master</a>
-			<a class="distortion" href="#">Distortion</a>
-			<a class="compressor" href="#">Compressor</a>
-			<a class="delay" href="#">Delay</a>
-			<a class="pad_controls" href="#">Pad</a>
-			<a class="mute_group" href="#">Mute Groups</a>
-			<a class="save_load" href="#">Save/Load</a>
-    </nav>
   </body>
 </html>
