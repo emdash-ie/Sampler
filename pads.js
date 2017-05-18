@@ -4,33 +4,83 @@
     function init() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
-        const filenames = [
-            'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/kick_int.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/snare_left.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_close.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom2.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/crash_high.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_open.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom3.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom4.wav',
-			'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_foot.wav'
-        ];
-        Sampler.init(audioContext, filenames, []);
+        const filenames = {
+            'kick': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/kick_int.wav',
+			'snare': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/snare_left.wav',
+			'closed-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_close.wav',
+			'high-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom2.wav',
+			'crash': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/crash_high.wav',
+			'open-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_open.wav',
+			'mid-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom3.wav',
+			'low-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom4.wav',
+			'pedal-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_foot.wav',
+        };
+        const muteGroups = {
+            'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
+        };
+        Sampler.init(audioContext, filenames, muteGroups);
     }
 
+    var Sampler = {
+        init: function(context, filenames, muteGroups) {
+            this.output = context.createGain();
+            this.output.connect(audioContext.destination);
+            this.pads = {};
+            this.screenPads = document.querySelectorAll('.padGrid-pad');
+            let i = 0;
+            for (let name in filenames) {
+                let pad = Object.create(SamplePad);
+                pad.setup(context, name, filenames[name]);
+                pad.connect(this.output);
+                this.screenPads[i].addEventListener('click', pad.playSample.bind(pad), false);
+                this.pads[name] = pad;
+                i++;
+            }
+            this.muteGroups = {};
+            for (let groupName in muteGroups) {
+                this.createMuteGroup(groupName, muteGroups[groupName]);
+            }
+            var masterSlider = Object.create(GainSlider);
+            masterSlider.connect(document.querySelector('#master'), this.output.gain);
+        },
+        createMuteGroup: function(name, padNames) {
+            let pads = {};
+            for (let padName of padNames) {
+                pads[padName] = this.pads[padName];
+            }
+            let muteGroup = Object.create(MuteGroup);
+            muteGroup.create(pads, name);
+            if (name in this.muteGroups) {
+                this.muteGroups[name].destroy();
+            }
+            this.muteGroups[name] = muteGroup;
+        },
+        deleteMuteGroup: function(name) {
+            this.muteGroups[name].destroy();
+            delete this.muteGroups[name];
+        },
+        disableMuteGroup: function(name) {
+            this.muteGroups[name].disable();
+        },
+        enableMuteGroup: function(name) {
+            this.muteGroups[name].enable();
+        },
+    };
+
     var SamplePad = {
-        setup: function(audioContext, filename) {
+        setup: function(audioContext, name, filename) {
             this.context = audioContext;
-            this.muteGroup = [];
+            this.name = name;
+            this.muteGroups = {};
             this.createSignalPath();
             this.loadSample(filename);
         },
         createSignalPath: function() {
-            this.mute = this.context.createGain();
+            this.muteGain = this.context.createGain();
             this.gain = this.context.createGain();
             this.send = this.context.createGain();
 
-            this.mute.connect(this.gain);
+            this.muteGain.connect(this.gain);
             this.gain.connect(this.send);
         },
         loadSample: function(filename) {
@@ -48,8 +98,6 @@
             const request = new XMLHttpRequest();
             request.open('GET', filename, true);
             request.responseType = 'arraybuffer';
-
-            // used to be an onload
             request.addEventListener('readystatechange', receiveAudio.bind(this, request), false);
             request.send();
         },
@@ -57,21 +105,21 @@
             if (this.buffer) {
                 const source = this.context.createBufferSource();
                 source.buffer = this.buffer;
-                source.connect(this.mute);
+                source.connect(this.muteGain);
                 this.unMute();
-                this.muteOthers();
+                this.triggerMuteGroups();
                 source.start();
             }
         },
         mute: function() {
-            this.mute.gain.value = 0;
+            this.muteGain.gain.value = 0;
         },
         unMute: function() {
-            this.mute.gain.value = 1;
+            this.muteGain.gain.value = 1;
         },
-        muteOthers: function() {
-            for (let pad of this.muteGroup) {
-                pad.mute();
+        triggerMuteGroups: function() {
+            for (let groupName in this.muteGroups) {
+                this.muteGroups[groupName].trigger(this);
             }
         },
         connect: function(destination) {
@@ -81,32 +129,45 @@
             this.send.connect(destination);
         },
         addMuteGroup: function(group) {
-            for (let pad of group) {
-                if (pad !== this) {
-                    this.muteGroup.push(pad);
+            this.muteGroups[group.name] = group;
+        },
+        removeMuteGroup: function(group) {
+            delete this.muteGroups[group.name];
+        },
+    };
+
+    var MuteGroup = {
+        create: function(pads, name) {
+            this.pads = pads;
+            this.name = name;
+            for (let padName in pads) {
+                pads[padName].addMuteGroup(this);
+            }
+            this.active = true;
+        },
+        destroy: function() {
+            for (let name in this.pads) {
+                this.pads[name].removeMuteGroup(this);
+            }
+            this.active = false;
+        },
+        disable: function() {
+            this.active = false;
+        },
+        enable: function() {
+            this.active = true;
+        },
+        trigger: function(playing) {
+            if (this.active) {
+                for (let name in this.pads) {
+                    if (this.pads[name] !== playing) {
+                        this.pads[name].mute();
+                    }
                 }
             }
         },
     };
 
-    var Sampler = {
-        init: function(context, filenames, muteGroups) {
-            this.output = context.createGain();
-            this.output.connect(audioContext.destination);
-            this.pads = [];
-            this.screenPads = document.querySelectorAll('.pad');
-            for (let i = 0; i < this.numPads; i++) {
-                let pad = Object.create(SamplePad);
-                pad.setup(context, filenames[i]);
-                pad.connect(this.output);
-                this.screenPads[i].addEventListener('click', pad.playSample.bind(pad), false);
-                this.pads.push(pad);
-            }
-            var masterSlider = Object.create(GainSlider);
-            masterSlider.connect(document.querySelector('#master-gain'), this.output.gain);
-        },
-        numPads: 9,
-    };
     var GainSlider = {
         input: null,
         connect: function(input, target) {
@@ -124,7 +185,13 @@
             this.input.addEventListener('input', this.handleInput.bind(this), false);
         },
         handleInput: function(inputEvent) {
-            this.target.value = inputEvent.target.value;
+            if (inputEvent.target.value > 1) {
+                this.target.value = 1;
+            } else if (inputEvent.target.value < -1) {
+                this.target.value = -1;
+            } else {
+                this.target.value = inputEvent.target.value;
+            }
         },
     };
 }());

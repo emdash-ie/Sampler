@@ -3,7 +3,7 @@
   <head>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="sampler.css">
-    <script src="sampler.js"></script>
+    <script src="pads.js"></script>
     <title>Sampler</title>
   </head>
   <body>
@@ -24,7 +24,7 @@
 			<form class="controlset" id="master_controls">
 				<legend>Global controls</legend>
 				<label for="master">Master gain:</label>
-				<input type="range" id="master" min="0" max="200" value="100">
+				<input type="range" id="master" min="0" max="1" value="1" step="0.1">
 				<canvas class="meter master" id="output_meter">
 			</form>
 			<form class="controlset" id="distortion">
