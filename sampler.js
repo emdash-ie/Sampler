@@ -33,7 +33,8 @@
                 let pad = Object.create(SamplePad);
                 pad.setup(context, name, filenames[name]);
                 pad.connect(this.output);
-                this.screenPads[i].addEventListener('click', pad.playSample.bind(pad), false);
+                pad.addTarget(this.screenPads[i]);
+                this.screenPads[i].samplerPad = pad;
                 this.pads[name] = pad;
                 i++;
             }
@@ -66,6 +67,11 @@
         enableMuteGroup: function(name) {
             this.muteGroups[name].enable();
         },
+        triggerPads: function(clickEvent) {
+            for (let pad of Object.values(clickEvent.target.samplerPads)) {
+                pad.playSample();
+            }
+        },
     };
 
     var SamplePad = {
@@ -73,6 +79,7 @@
             this.context = audioContext;
             this.name = name;
             this.muteGroups = {};
+            this.targets = {};
             this.createSignalPath();
             this.loadSample(filename);
         },
@@ -118,11 +125,6 @@
         unMute: function() {
             this.muteGain.gain.value = 1;
         },
-        triggerMuteGroups: function() {
-            for (let groupName in this.muteGroups) {
-                this.muteGroups[groupName].trigger(this);
-            }
-        },
         connect: function(destination) {
             this.gain.connect(destination);
         },
@@ -134,6 +136,36 @@
         },
         removeMuteGroup: function(group) {
             delete this.muteGroups[group.name];
+        },
+        triggerMuteGroups: function() {
+            for (let groupName in this.muteGroups) {
+                this.muteGroups[groupName].trigger(this);
+            }
+        },
+        addTarget: function(target) {
+            this.targets[target.name] = target;
+            if (!('samplerPads' in target)) {
+                target.samplerPads = {};
+                target.addEventListener('click', Sampler.triggerPads, false);
+            }
+            target.samplerPads[this.name] = this;
+        },
+        removeTarget: function(target) {
+            delete this.targets[target.name];
+            delete target.samplerPads[this.name];
+            if (Object.keys(target.samplerPads).length === 0) {
+                delete target.samplerPads;
+                target.removeEventListener('click', Sampler.triggerPads, false);
+            }
+        },
+        clearTargets: function() {
+            for (let target in this.targets) {
+                this.removeTarget(target);
+            }
+        },
+        setTarget: function(target) {
+            this.clearTargets();
+            this.addTarget(target);
         },
     };
 
