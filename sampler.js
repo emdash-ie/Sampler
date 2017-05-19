@@ -20,11 +20,6 @@
             'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
         };
         Sampler.init(audioContext, filenames, muteGroups);
-        let pads = document.querySelectorAll('.padGrid-pad');
-        let kickPad = pads[0];
-        let snarePad = pads[1];
-        Sampler.pads['snare'].setTarget(kickPad);
-        Sampler.pads['kick'].setTarget(snarePad);
     }
 
     var Sampler = {
@@ -38,7 +33,7 @@
                 let pad = Object.create(SamplePad);
                 pad.setup(context, name, filenames[name]);
                 pad.connect(this.output);
-                pad.setTarget(this.screenPads[i]);
+                pad.addTarget(this.screenPads[i]);
                 this.screenPads[i].samplerPad = pad;
                 this.pads[name] = pad;
                 i++;
@@ -72,7 +67,7 @@
         enableMuteGroup: function(name) {
             this.muteGroups[name].enable();
         },
-        playSamples: function(clickEvent) {
+        triggerPads: function(clickEvent) {
             for (let pad of Object.values(clickEvent.target.samplerPads)) {
                 pad.playSample();
             }
@@ -84,6 +79,7 @@
             this.context = audioContext;
             this.name = name;
             this.muteGroups = {};
+            this.targets = {};
             this.createSignalPath();
             this.loadSample(filename);
         },
@@ -147,40 +143,29 @@
             }
         },
         addTarget: function(target) {
-            if ('target' in this) {
-                this.targets[target.name] = target;
-            } else {
-                this.targets = {}
-                this.targets[target.name] = target;
-                for (let target of Object.values(this.targets)) {
-                    target.addEventListener('click', Sampler.playSample, false);
-                }
-            }
+            this.targets[target.name] = target;
             if (!('samplerPads' in target)) {
                 target.samplerPads = {};
+                target.addEventListener('click', Sampler.triggerPads, false);
             }
             target.samplerPads[this.name] = this;
         },
         removeTarget: function(target) {
             delete this.targets[target.name];
-            if (Object.keys(this.target).length === 0) {
-                this.targets.removeEventListener('click', Sampler.playSample, false);
+            delete target.samplerPads[this.name];
+            if (Object.keys(target.samplerPads).length === 0) {
+                delete target.samplerPads;
+                target.removeEventListener('click', Sampler.triggerPads, false);
+            }
+        },
+        clearTargets: function() {
+            for (let target in this.targets) {
+                this.removeTarget(target);
             }
         },
         setTarget: function(target) {
-            if ('target' in this) {
-                delete this.target.samplerPads[this.name];
-                if (Object.keys(this.target.samplerPads).length === 0) {
-                    this.target.removeEventListener('click', Sampler.playSample, false);
-                    delete this.target.samplerPads;
-                }
-            }
-            this.target = target;
-            if (!('samplerPads' in this.target)) {
-                this.target.samplerPads = {};
-                this.target.addEventListener('click', Sampler.playSamples, false);
-            }
-            this.target.samplerPads[this.name] = this;
+            this.clearTargets();
+            this.addTarget(target);
         },
     };
 
