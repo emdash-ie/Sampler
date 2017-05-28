@@ -6,15 +6,15 @@
         audioContext = new AudioContext();
 
         const filenames = {
-            'kick': 'Sampler/Samples/kick_int.wav',
-			'snare': 'Sampler/Samples/snare_left.wav',
-			'closed-hat': 'Sampler/Samples/hat_close.wav',
-			'high-tom': 'Sampler/Samples/tom2.wav',
-			'crash': 'Sampler/Samples/crash_high.wav',
-			'open-hat': 'Sampler/Samples/hat_open.wav',
-			'mid-tom': 'Sampler/Samples/tom3.wav',
-			'low-tom': 'Sampler/Samples/tom4.wav',
-			'pedal-hat': 'Sampler/Samples/hat_foot.wav',
+            'kick': 'Samples/kick_int.wav',
+			'snare': 'Samples/snare_left.wav',
+			'closed-hat': 'Samples/hat_close.wav',
+			'high-tom': 'Samples/tom2.wav',
+			'crash': 'Samples/crash_high.wav',
+			'open-hat': 'Samples/hat_open.wav',
+			'mid-tom': 'Samples/tom3.wav',
+			'low-tom': 'Samples/tom4.wav',
+			'pedal-hat': 'Samples/hat_foot.wav',
         };
         const muteGroups = {
             'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
