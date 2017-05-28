@@ -6,15 +6,15 @@
         audioContext = new AudioContext();
 
         const filenames = {
-            'kick': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/kick_int.wav',
-			'snare': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/snare_left.wav',
-			'closed-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_close.wav',
-			'high-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom2.wav',
-			'crash': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/crash_high.wav',
-			'open-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_open.wav',
-			'mid-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom3.wav',
-			'low-tom': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/tom4.wav',
-			'pedal-hat': 'http://lizardpeoplelizardchurch.netsoc.co/Sampler/Samples/hat_foot.wav',
+            'kick': 'Sampler/Samples/kick_int.wav',
+			'snare': 'Sampler/Samples/snare_left.wav',
+			'closed-hat': 'Sampler/Samples/hat_close.wav',
+			'high-tom': 'Sampler/Samples/tom2.wav',
+			'crash': 'Sampler/Samples/crash_high.wav',
+			'open-hat': 'Sampler/Samples/hat_open.wav',
+			'mid-tom': 'Sampler/Samples/tom3.wav',
+			'low-tom': 'Sampler/Samples/tom4.wav',
+			'pedal-hat': 'Sampler/Samples/hat_foot.wav',
         };
         const muteGroups = {
             'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
