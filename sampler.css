@@ -3,9 +3,34 @@ html, body {
 	margin: 0;
 }
 
-.samplerPads {
+.sampler {
+	align-items: stretch;
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	width: 100%;
+}
+
+.sampler-space {
+	display: none;
+	flex: 2 2 auto;
+}
+
+.sampler-controls {
+	flex: 1 1 auto;
+}
+
+.sampler-controls * {
+	width: 100%;
+}
+
+.controlset {
+	width: 80%;
+}
+
+.sampler-pads {
+	flex: none;
 	height: 100vw;
-	margin: 0 auto;
 	width: 100vw;
 }
 
@@ -26,8 +51,24 @@ html, body {
 }
 
 @media only screen and (orientation: landscape) {
-	.samplerPads {
+	.sampler {
+		align-items: center;
+	}
+
+	.sampler-pads {
 		height: 100vh;
 		width: 100vh;
+	}
+}
+
+@media only screen and (min-aspect-ratio: 4/3) {
+	.sampler {
+		align-items: stretch;
+		flex-flow: row;
+		margin: 0;
+	}
+
+	.sampler-space {
+		display: block;
 	}
 }

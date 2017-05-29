@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="sampler.css">
     <script src="sampler.js"></script>
     <title>Sampler</title>
   </head>
   <body>
-    <div class="samplerPads">
-      <div class="padGrid">
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
-        <button class="padGrid-pad" type="button"></button>
+    <div class="sampler">
+      <div class="sampler-space"></div>
+      <div class="sampler-pads">
+        <div class="padGrid">
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+          <button class="padGrid-pad" type="button"></button>
+        </div>
       </div>
+      <aside class="sampler-controls">
+        <h3>Master controls</h3>
+        <div class="controlset">
+    			<label for="masterGain">Master gain:</label>
+      		<input class="slider" id="masterGain" type="range" min="0" max="1" value="0.7" step="0.01">
+        </div>
+      </aside>
     </div>
-    <aside>
-			<form class="controlset" id="master_controls">
-				<label for="master">Master gain:</label>
-				<input type="range" id="master" min="0" max="1" value="0.7" step="0.1">
-			</form>
-    </aside>
   </body>
 </html>

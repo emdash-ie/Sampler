@@ -43,7 +43,7 @@
                 this.createMuteGroup(groupName, muteGroups[groupName]);
             }
             var masterSlider = Object.create(GainSlider);
-            masterSlider.connect(document.querySelector('#master'), this.output.gain);
+            masterSlider.connect(document.querySelector('#masterGain'), this.output.gain);
         },
         createMuteGroup: function(name, padNames) {
             let pads = {};
