@@ -10,19 +10,15 @@ html, body {
 }
 
 .padGrid {
-	align-content: space-between;
-	display: flex;
-	flex-flow: wrap;
+	display: grid;
+	grid: repeat(3, 1fr) / repeat(3, 1fr);
 	height: 100%;
-	justify-content: space-between;
 	width: 100%;
 }
 
 .padGrid-pad {
 	background: dodgerblue;
 	border: none;
-	height: 33.24%;
-	width: 33.24%;
 }
 
 @media only screen and (orientation: landscape) {
