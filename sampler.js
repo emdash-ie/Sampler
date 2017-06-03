@@ -227,4 +227,64 @@
             }
         },
     };
+
+    var SerialSignalPath = {
+        nodes: {
+            length: 0,
+            addNode: function(name, node) {
+                this[name] = node;
+                this.length += 1;
+            },
+        },
+        firstNode: undefined,
+        lastNode: undefined,
+        inputs: [],
+        outputs: [],
+        rewireInputs: function (newNode) {
+            for (let input of this.inputs) {
+                input.disconnect(this.firstNode);
+                input.connect(newNode);
+            }
+        },
+        rewireOutputs: function(newNode) {
+            for (let output of this.outputs) {
+                this.lastNode.disconnect(output);
+                this.newNode.connect(output);
+            }
+        },
+        addFirstNode: function(node, name) {
+            if (this.firstNode) {
+                this.disconnectInputs();
+                node.connect(this.firstNode);
+            } else {
+                this.lastNode = node;
+            }
+            this.nodes.addNode(node, name);
+            this.firstNode = node;
+            this.connectInputs();
+        },
+        addLastNode: function(node, name) {
+            if (this.lastNode) {
+                this.disconnectOutputs();
+                this.lastNode.connect(node);
+            } else {
+                this.firstNode = node;
+            }
+            this.nodes.addNode(node, name);
+            this.lastNode = node;
+            this.connectOutputs();
+        },
+        connectInput: function(input) {
+            if (this.firstNode) {
+                input.connect(this.firstNode);
+            }
+            this.inputs.push(input);
+        },
+        connectOutput: function(output) {
+            if (this.lastNode) {
+                this.lastNode.connect(output);
+            }
+            this.outputs.push(output);
+        },
+    };
 }());
