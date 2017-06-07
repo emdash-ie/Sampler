@@ -1,10 +1,16 @@
 (function() {
     document.addEventListener('DOMContentLoaded', init, false);
 
+    /** Initialises the webpage. */
     function init() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
 
+        /**
+         * The files to be played by the sample pads.
+         * @constant {Object.<string, string>}
+         * @default
+         */
         const filenames = {
             'kick': 'Samples/kick_int.wav',
 			'snare': 'Samples/snare_left.wav',
@@ -16,12 +22,23 @@
 			'low-tom': 'Samples/tom4.wav',
 			'pedal-hat': 'Samples/hat_foot.wav',
         };
+
+        /**
+         * Pads that will mute each other when activated, so that only one of each group is ever
+         * playing at once.
+         * @constant
+         * @default
+         */
         const muteGroups = {
             'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
         };
+
         Sampler.init(audioContext, filenames, muteGroups);
     }
 
+    /**
+     * Plays samples when pads are pressed, and has controls to affect the sound.
+     */
     var Sampler = {
         init: function(context, filenames, muteGroups) {
             this.output = context.createGain();
