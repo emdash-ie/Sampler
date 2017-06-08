@@ -26,7 +26,7 @@
         /**
          * Pads that will mute each other when activated, so that only one of each group is ever
          * playing at once.
-         * @constant
+         * @constant {Object.<string, string[]>}
          * @default
          */
         const muteGroups = {
@@ -40,6 +40,12 @@
      * Plays samples when pads are pressed, and has controls to affect the sound.
      */
     var Sampler = {
+        /**
+         * Initialises the sample-player.
+         * @param {Object.<string, string>} filenames The samples to be triggered by the
+         *     pads.
+         * @param {Object.<string, string[]>} muteGroups The muteGroups to set.
+         */
         init: function(context, filenames, muteGroups) {
             this.output = context.createGain();
             this.output.connect(audioContext.destination);
@@ -62,6 +68,12 @@
             var masterSlider = Object.create(GainSlider);
             masterSlider.connect(document.querySelector('#master'), this.output.gain);
         },
+        /**
+         * Creates a new mute group – a group of pads of which only one can play at once.
+         * @param {string} name The name for the new group.
+         * @param {Array<string>} padNames The names of the pads to be included in the
+         *     group.
+         */
         createMuteGroup: function(name, padNames) {
             let pads = {};
             for (let padName of padNames) {
@@ -74,16 +86,32 @@
             }
             this.muteGroups[name] = muteGroup;
         },
+        /**
+         * Deletes a mute group.
+         * @param {string} name The name of the group to delete.
+         */
         deleteMuteGroup: function(name) {
             this.muteGroups[name].destroy();
             delete this.muteGroups[name];
         },
+        /**
+         * Disables a mute group. The group will still exist but won't have any effect.
+         * @param {string} name The name of the group to disable.
+         */
         disableMuteGroup: function(name) {
             this.muteGroups[name].disable();
         },
+        /**
+         * Enables a mute group. Groups are enabled by default.
+         * @param {string} name The name of the group to enable.
+         */
         enableMuteGroup: function(name) {
             this.muteGroups[name].enable();
         },
+        /**
+         * Plays the pads associated with a target.
+         * @callback
+         */
         triggerPads: function(clickEvent) {
             for (let pad of Object.values(clickEvent.target.samplerPads)) {
                 pad.playSample();
