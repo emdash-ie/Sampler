@@ -119,7 +119,16 @@
         },
     };
 
+    /**
+     * A pad that plays a sample when activated.
+     */
     var SamplePad = {
+        /**
+         * Initialises the pad.
+         * @param {AudioContext} audioContext The audio context for the pad to operate in.
+         * @param {string} name The name of the pad.
+         * @param {string} filename The file the pad should play.
+         */
         setup: function(audioContext, name, filename) {
             this.context = audioContext;
             this.name = name;
@@ -128,6 +137,10 @@
             this.createSignalPath();
             this.loadSample(filename);
         },
+        /**
+         * Creates the signal path for the pad.
+         * @private
+         */
         createSignalPath: function() {
             this.muteGain = this.context.createGain();
             this.gain = this.context.createGain();
@@ -136,6 +149,10 @@
             this.muteGain.connect(this.gain);
             this.gain.connect(this.send);
         },
+        /**
+         * Loads a sample for the pad to play.
+         * @param {string} filename The file to load.
+         */
         loadSample: function(filename) {
             var receiveAudio = function(request) {
                 if (request.readyState === 4 && request.status === 200) {
@@ -147,13 +164,15 @@
                     this.context.decodeAudioData(audioData, successFunction.bind(this), errorFunction);
                 }
             };
-
             const request = new XMLHttpRequest();
             request.open('GET', filename, true);
             request.responseType = 'arraybuffer';
             request.addEventListener('readystatechange', receiveAudio.bind(this, request), false);
             request.send();
         },
+        /**
+         * Plays the sample associated with this pad.
+         */
         playSample: function() {
             if (this.buffer) {
                 const source = this.context.createBufferSource();
@@ -164,29 +183,61 @@
                 source.start();
             }
         },
+        /**
+         * Mutes the pad. Used by mute groups.
+         * @private
+         */
         mute: function() {
             this.muteGain.gain.value = 0;
         },
+        /**
+         * Unmutes the pad. Used by mute groups.
+         * @private
+         */
         unMute: function() {
             this.muteGain.gain.value = 1;
         },
+        /**
+         * Connects the output of the pad to a destination.
+         * @param {AudioGainNode} destination The destination to connect the output to.
+         */
         connect: function(destination) {
             this.gain.connect(destination);
         },
+        /**
+         * Connects the send output of the pad to a destination.
+         * @param {AudioGainNode} destination The destination to connect the send output to.
+         */
         connectSend: function(destination) {
             this.send.connect(destination);
         },
+        /**
+         * Adds a mute group.
+         * @param {MuteGroup} group The mute group to add.
+         */
         addMuteGroup: function(group) {
             this.muteGroups[group.name] = group;
         },
+        /**
+         * Removes a mute group.
+         * @param {MuteGroup} group The mute group to remove.
+         */
         removeMuteGroup: function(group) {
             delete this.muteGroups[group.name];
         },
+        /**
+         * Triggers the mute groups this pad is a member of, muting all other pads in those
+         * groups.
+         */
         triggerMuteGroups: function() {
             for (let groupName in this.muteGroups) {
                 this.muteGroups[groupName].trigger(this);
             }
         },
+        /**
+         * Adds a target to this pad – when that target is clicked, this pad will be triggered.
+         * @param {Element} target The target to add to this pad.
+         */
         addTarget: function(target) {
             this.targets[target.name] = target;
             if (!('samplerPads' in target)) {
@@ -195,6 +246,10 @@
             }
             target.samplerPads[this.name] = this;
         },
+        /**
+         * Removes a target from this pad.
+         * @param {Element} target The target to remove from this pad.
+         */
         removeTarget: function(target) {
             delete this.targets[target.name];
             delete target.samplerPads[this.name];
@@ -203,11 +258,16 @@
                 target.removeEventListener('click', Sampler.triggerPads, false);
             }
         },
+        /** Removes all targets from this pad. */
         clearTargets: function() {
             for (let target in this.targets) {
                 this.removeTarget(target);
             }
         },
+        /**
+         * Sets a new single target for this pad.
+         * @param {Element} target The target to be the only target for this pad.
+         */
         setTarget: function(target) {
             this.clearTargets();
             this.addTarget(target);
