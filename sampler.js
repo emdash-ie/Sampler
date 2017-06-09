@@ -274,7 +274,19 @@
         },
     };
 
+    /**
+     * A group of pads, of which only one can play at once.
+     * @typedef {Object} MuteGroup
+     * @property {string} name – The name of the group.
+     * @property {Object} pads – The pads in this group.
+     * @property {boolean} active – Whether this group is currently active.
+     */
     var MuteGroup = {
+        /**
+         * Initialises the group.
+         * @param {Object} pads The SamplePads this group should contain.
+         * @param {string} name The name for this group.
+         */
         create: function(pads, name) {
             this.pads = pads;
             this.name = name;
@@ -283,18 +295,25 @@
             }
             this.active = true;
         },
+        /** Destroys the group. */
         destroy: function() {
             for (let name in this.pads) {
                 this.pads[name].removeMuteGroup(this);
             }
             this.active = false;
         },
+        /** Disables the group – it will have no effect while disabled. */
         disable: function() {
             this.active = false;
         },
+        /** Enables the group – the group is enabled by default. */
         enable: function() {
             this.active = true;
         },
+        /**
+         * Triggers the group, muting all pads except the currently playing one.
+         * @param {SamplePad} playing The pad that is currently playing.
+         */
         trigger: function(playing) {
             if (this.active) {
                 for (let name in this.pads) {
