@@ -1,7 +1,9 @@
 (function() {
     document.addEventListener('DOMContentLoaded', init, false);
 
-    /** Initialises the webpage. */
+    /**
+    * Initialises the webpage.
+    */
     function init() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
@@ -295,14 +297,18 @@
             }
             this.active = true;
         },
-        /** Destroys the group. */
+        /**
+         * Destroys the group.
+         */
         destroy: function() {
             for (let name in this.pads) {
                 this.pads[name].removeMuteGroup(this);
             }
             this.active = false;
         },
-        /** Disables the group – it will have no effect while disabled. */
+        /**
+        * Disables the group – it will have no effect while disabled.
+        */
         disable: function() {
             this.active = false;
         },
