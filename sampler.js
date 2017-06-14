@@ -279,9 +279,9 @@
     /**
      * A group of pads, of which only one can play at once.
      * @typedef {Object} MuteGroup
-     * @property {string} name – The name of the group.
-     * @property {Object} pads – The pads in this group.
-     * @property {boolean} active – Whether this group is currently active.
+     * @property {string} name The name of the group.
+     * @property {Object} pads The pads in this group.
+     * @property {boolean} active Whether this group is currently active.
      */
     var MuteGroup = {
         /**
