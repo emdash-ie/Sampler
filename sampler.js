@@ -457,6 +457,14 @@
 
         console.log(linkedDictionary.linkedList.toString())
         console.log(linkedDictionary)
+
+        for (let value of linkedDictionary) {
+            console.log(value)
+        }
+
+        for (let key of linkedDictionary.keys()) {
+            console.log(`${key}: ${linkedDictionary.get(key)}`)
+        }
     }
 
     let LinkedDictionary = {
@@ -465,38 +473,50 @@
                 yield node.getValue()
             }
         },
-        init: function() {
-            this.linkedList = Object.create(LinkedList)
-            this.linkedList.init(ListNode)
-            this.dictionary = {}
-        },
-        get: function(key) {
-            return this.dictionary[key].getValue()
-        },
-        put: function(key, value) {
-            if (key in this.dictionary) {
-                this.dictionary[key].setValue(value)
+        keys: function* () {
+            for (let node of this.linkedList) {
+                yield node.getName()
             }
         },
+        init: function() {
+            this.linkedList = Object.create(LinkedList)
+            this.linkedList.init(NamedListNode)
+            this.nodes = {}
+        },
+        get: function(key) {
+            return this.nodes[key].getValue()
+        },
+        put: function(key, value) {
+            if (key in this.nodes) {
+                this.nodes[key].setValue(value)
+            }
+        },
+        add: function(key, value, addFunction, extraKey) {
+            let thisNode
+            if (extraKey == undefined) {
+                thisNode = addFunction.call(this.linkedList, value)
+            } else {
+                let extraNode = this.nodes[extraKey]
+                thisNode = addFunction.call(this.linkedList, extraNode, value)
+            }
+            this.nodes[key] = thisNode
+            thisNode.setName(key)
+        },
         addAfter: function(beforeKey, key, value) {
-            let beforeNode = this.dictionary[beforeKey]
-            let thisNode = this.linkedList.addAfter(beforeNode, value)
-            this.dictionary[key] = thisNode
+            this.add(key, value, this.linkedList.addAfter, beforeKey)
         },
         addBefore: function(afterKey, key, value) {
-            let afterNode = this.dictionary[afterKey]
-            let thisNode = this.linkedList.addBefore(afterNode, value)
-            this.dictionary[key] = thisNode
+            this.add(key, value, this.linkedList.addBefore, afterKey)
         },
         addFirst: function(key, value) {
-            this.dictionary[key] = this.linkedList.addFirst(value)
+            this.add(key, value, this.linkedList.addFirst)
         },
         addLast: function(key, value) {
-            this.dictionary[key] = this.linkedList.addLast(value)
+            this.add(key, value, this.linkedList.addLast)
         },
         remove: function(key) {
-            this.linkedList.removeNode(this.dictionary[key])
-            delete this.dictionary[key]
+            this.linkedList.removeNode(this.nodes[key])
+            delete this.nodes[key]
         },
         size: function() {
             return this.linkedList.size
@@ -606,5 +626,15 @@
             delete this.nextNode
             delete this.prevNode
         }
+    }
+
+    let NamedListNode = Object.create(ListNode)
+
+    NamedListNode.getName = function() {
+        return this.name
+    }
+
+    NamedListNode.setName = function(name) {
+        this.name = name
     }
 }());
