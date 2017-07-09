@@ -5,6 +5,7 @@
     * Initialises the webpage.
     */
     function init() {
+        test();
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContext = new AudioContext();
 
@@ -437,4 +438,173 @@
             this.outputs.push(output);
         },
     };
+
+    /* Datastructures */
+
+    function test() {
+        linkedDictionary = Object.create(LinkedDictionary)
+        linkedDictionary.init()
+        linkedDictionary.addFirst('input', 42)
+        linkedDictionary.addLast('output', 20)
+        linkedDictionary.addAfter('input', 'compressor', 10)
+        linkedDictionary.addBefore('compressor', 'delay', 5)
+
+        console.log(linkedDictionary.linkedList.toString())
+        console.log(linkedDictionary.size())
+        console.log(linkedDictionary.get('delay'))
+
+        linkedDictionary.remove('compressor')
+
+        console.log(linkedDictionary.linkedList.toString())
+        console.log(linkedDictionary)
+    }
+
+    let LinkedDictionary = {
+        [Symbol.iterator]: function* () {
+            for (let node of this.linkedList) {
+                yield node.getValue()
+            }
+        },
+        init: function() {
+            this.linkedList = Object.create(LinkedList)
+            this.linkedList.init(ListNode)
+            this.dictionary = {}
+        },
+        get: function(key) {
+            return this.dictionary[key].getValue()
+        },
+        put: function(key, value) {
+            if (key in this.dictionary) {
+                this.dictionary[key].setValue(value)
+            }
+        },
+        addAfter: function(beforeKey, key, value) {
+            let beforeNode = this.dictionary[beforeKey]
+            let thisNode = this.linkedList.addAfter(beforeNode, value)
+            this.dictionary[key] = thisNode
+        },
+        addBefore: function(afterKey, key, value) {
+            let afterNode = this.dictionary[afterKey]
+            let thisNode = this.linkedList.addBefore(afterNode, value)
+            this.dictionary[key] = thisNode
+        },
+        addFirst: function(key, value) {
+            this.dictionary[key] = this.linkedList.addFirst(value)
+        },
+        addLast: function(key, value) {
+            this.dictionary[key] = this.linkedList.addLast(value)
+        },
+        remove: function(key) {
+            this.linkedList.removeNode(this.dictionary[key])
+            delete this.dictionary[key]
+        },
+        size: function() {
+            return this.linkedList.size
+        },
+        isEmpty: function() {
+            return this.linkedList.isEmpty()
+        }
+    }
+
+    let LinkedList = {
+        init: function(NodeObject) {
+            this.node = NodeObject
+            this.head = Object.create(this.node)
+            this.tail = Object.create(this.node)
+            this.head.setNext(this.tail)
+            this.tail.setPrev(this.head)
+            this.size = 0
+            this[Symbol.iterator] = function*() {
+                if (!this.isEmpty()) {
+                    let node = this.head.getNext()
+                    while (node.getNext()) {
+                        yield node
+                        node = node.getNext()
+                    }
+                }
+            }
+        },
+        /**
+         * Adds a new value after the given node.
+         * @return The node containing the new value.
+         */
+        addAfter: function(before, value) {
+            let after = before.getNext()
+            let node = Object.create(this.node)
+            node.setValue(value)
+            node.setPrev(before)
+            node.setNext(after)
+            after.setPrev(node)
+            before.setNext(node)
+            this.size++
+            return node
+        },
+        /**
+         * Adds a new value before the given node.
+         * @return The node containing the new value.
+         */
+        addBefore: function(after, value) {
+            return this.addAfter(after.getPrev(), value)
+        },
+        /**
+         * Adds a new value to the start of the list.
+         * @return The node containing the new value.
+         */
+        addFirst: function(value) {
+            return this.addAfter(this.head, value)
+        },
+        /**
+         * Adds a new value to the end of the list.
+         * @return The node containing the new value.
+         */
+        addLast: function(value) {
+            return this.addBefore(this.tail, value)
+        },
+        removeNode: function(node) {
+            node.getNext().setPrev(node.getPrev())
+            node.getPrev().setNext(node.getNext())
+            this.size--
+        },
+        isEmpty: function() {
+            return this.size === 0
+        },
+        toString: function() {
+            let output = []
+            for (let node of this) {
+                output.push(node.getValue())
+            }
+            return '[' + output.join(', ') + ']'
+        }
+    }
+
+    /**
+     * A node in a linked list.
+     * @property {function} getNext Returns the node after this one in the list.
+     * @property {function} getPrev Returns the node before this one in the list.
+     */
+    let ListNode = {
+        getValue: function() {
+            return this.value
+        },
+        setValue: function(value) {
+            this.value = value
+        },
+        getNext: function() {
+            return this.nextNode
+        },
+        setNext: function(node) {
+            this.nextNode = node
+        },
+        getPrev: function() {
+            return this.prevNode
+        },
+        setPrev: function(node) {
+            this.prevNode = node
+        },
+        clear: function() {
+            delete this.value
+            delete this.nextNode
+            delete this.prevNode
+        }
+    }
 }());
