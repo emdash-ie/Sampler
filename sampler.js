@@ -14,15 +14,15 @@
          * @default
          */
         const filenames = {
-            'kick': 'Samples/kick_int.wav',
-			'snare': 'Samples/snare_left.wav',
-			'closed-hat': 'Samples/hat_close.wav',
-			'high-tom': 'Samples/tom2.wav',
-			'crash': 'Samples/crash_high.wav',
-			'open-hat': 'Samples/hat_open.wav',
-			'mid-tom': 'Samples/tom3.wav',
-			'low-tom': 'Samples/tom4.wav',
-			'pedal-hat': 'Samples/hat_foot.wav',
+            'kick': 'Samples/Kick.wav',
+			'snare': 'Samples/Snare.wav',
+			'closed-hat': 'Samples/Closed Hat.wav',
+            'ride': 'Samples/Ride.wav',
+			'crash': 'Samples/Crash.wav',
+			'open-hat': 'Samples/Open Hat.wav',
+			'high-tom': 'Samples/High Tom.wav',
+			'mid-tom': 'Samples/Mid Tom.wav',
+			'low-tom': 'Samples/Low Tom.wav',
         };
 
         /**
@@ -32,7 +32,7 @@
          * @default
          */
         const muteGroups = {
-            'hihat': ['closed-hat', 'open-hat', 'pedal-hat'],
+            'hihat': ['closed-hat', 'open-hat'],
         };
 
         Sampler.init(audioContext, filenames, muteGroups);
